@@ -1,0 +1,40 @@
+Router>ena
+Router#config t
+Enter configuration commands, one per line.  End with CNTL/Z.
+Router(config)#hostnam
+Router(config)#hostname R1
+R1(config)#int gig0/0
+R1(config-if)#ip add 192.168.10.1 255.255.255.0
+R1(config-if)#no shut 
+
+R1(config-if)#
+%LINK-5-CHANGED: Interface GigabitEthernet0/0, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/0, changed state to up
+exit
+R1(config)#int g0/1
+R1(config-if)#ip add 192.168.20.1 255.255.255.0
+R1(config-if)#no shut
+
+R1(config-if)#
+%LINK-5-CHANGED: Interface GigabitEthernet0/1, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/1, changed state to up
+
+R1(config-if)#exit
+R1(config)#end
+R1#
+%SYS-5-CONFIG_I: Configured from console by console
+
+R1#copy 
+R1#copy run
+R1#copy running-config 
+% Incomplete command.
+R1#copy running-config 
+R1#copy running-config st
+R1#copy running-config startup-config 
+Destination filename [startup-config]? Day 1
+%Error copying nvram:Day 1 (Invalid argument)
+R1#
+R1#copy running-config startup-config 
+Destination filename [startup-config]? R1
