@@ -1,0 +1,60 @@
+enable
+configure terminal
+hostname SW1
+no ip domain-lookup
+enable secret class
+service password-encryption
+banner motd #AUTHORISED ACCESS ONLY#
+
+line console 0
+password cisco
+login
+logging synchronous
+exit
+
+interface vlan 1
+description MANAGEMENT_SVI
+ip address 192.168.10.2 255.255.255.0
+no shutdown
+exit
+
+interface fastEthernet 0/1
+description PC-A
+exit
+interface fastEthernet 0/2
+description PC-B
+exit
+interface fastEthernet 0/3
+description PC-C
+exit
+interface fastEthernet 0/4
+description PC-D
+exit
+
+end
+copy running-config startup-config
+
+! Verification commands
+show ip interface brief
+show interfaces status
+show mac address-table dynamic
+show running-config
+
+! Simulation reset command
+clear mac address-table dynamic
+
+! Deliberate fault
+configure terminal
+interface fastEthernet 0/2
+shutdown
+end
+show interfaces status
+show interfaces fastEthernet 0/2
+
+! Recovery
+configure terminal
+interface fastEthernet 0/2
+no shutdown
+end
+copy running-config startup-config
+

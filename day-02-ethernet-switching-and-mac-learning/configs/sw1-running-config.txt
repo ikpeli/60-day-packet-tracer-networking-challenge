@@ -1,0 +1,8 @@
+REPLACE THIS TEMPLATE AFTER COMPLETING THE LAB.
+
+On SW1, run:
+
+show running-config
+
+Copy the complete command output into this file, replacing all of this template text.
+
