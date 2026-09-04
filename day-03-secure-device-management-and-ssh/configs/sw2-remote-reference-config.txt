@@ -1,0 +1,54 @@
+! DAY 3 SANITIZED REFERENCE — SW2-REMOTE
+enable
+configure terminal
+hostname SW2-REMOTE
+no ip domain-lookup
+enable secret <LAB_ENABLE_SECRET>
+service password-encryption
+username netadmin privilege 15 secret <LAB_SSH_SECRET>
+ip domain-name portfolio.local
+banner motd ^CAUTHORISED USERS ONLY^C
+
+vlan 20
+ name REMOTE-MGMT
+ exit
+
+interface GigabitEthernet0/1
+ description TO_R1_G0_1
+ switchport mode access
+ switchport access vlan 20
+ exit
+
+interface Vlan20
+ description MANAGEMENT_SVI
+ ip address 192.168.20.2 255.255.255.0
+ no shutdown
+ exit
+
+ip default-gateway 192.168.20.1
+
+line console 0
+ password <LAB_CONSOLE_PASSWORD>
+ login
+ logging synchronous
+ exec-timeout 5 0
+ exit
+
+line vty 0 4
+ login local
+ transport input ssh
+ exec-timeout 5 0
+ exit
+
+line vty 5 15
+ login local
+ transport input ssh
+ exec-timeout 5 0
+ exit
+
+ip ssh version 2
+end
+
+! Run from privileged EXEC mode after hostname and domain configuration:
+! crypto key generate rsa modulus 1024
+! copy running-config startup-config

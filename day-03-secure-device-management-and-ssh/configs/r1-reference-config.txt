@@ -1,0 +1,42 @@
+! DAY 3 SANITIZED REFERENCE — R1
+enable
+configure terminal
+hostname R1
+no ip domain-lookup
+enable secret <LAB_ENABLE_SECRET>
+service password-encryption
+username netadmin privilege 15 secret <LAB_SSH_SECRET>
+ip domain-name portfolio.local
+banner motd ^CAUTHORISED USERS ONLY^C
+
+interface GigabitEthernet0/0
+ description TO_SW1_ADMIN
+ ip address 192.168.10.1 255.255.255.0
+ no shutdown
+ exit
+
+interface GigabitEthernet0/1
+ description TO_SW2_REMOTE
+ ip address 192.168.20.1 255.255.255.0
+ no shutdown
+ exit
+
+line console 0
+ password <LAB_CONSOLE_PASSWORD>
+ login
+ logging synchronous
+ exec-timeout 5 0
+ exit
+
+line vty 0 15
+ login local
+ transport input ssh
+ exec-timeout 5 0
+ exit
+
+ip ssh version 2
+end
+
+! Run from privileged EXEC mode after hostname and domain configuration:
+! crypto key generate rsa modulus 1024
+! copy running-config startup-config
